@@ -70,7 +70,22 @@ This program is available under Apache License Version 2.0, available at https:/
               type: String,
               notify: true,
               observer: '_valueChanged'
-            }
+            },
+
+            required: {
+              type: Boolean,
+              reflectToAttribute: true
+            },
+
+            /**
+             * This property is set to true when the control value is invalid.
+             */
+            invalid: {
+              type: Boolean,
+              reflectToAttribute: true,
+              notify: true,
+              value: false
+            },
           };
         }
 
@@ -207,6 +222,9 @@ This program is available under Apache License Version 2.0, available at https:/
         _checkedButtonChanged(checkedButton) {
           this._radioButtons.forEach(button => button.checked = button === checkedButton);
 
+          if (this.invalid) {
+            this.validate();
+          }
           this.value = checkedButton.value;
         }
 
@@ -227,6 +245,31 @@ This program is available under Apache License Version 2.0, available at https:/
           items.forEach(e => e.tabindex = e === items[idx] ? 0 : -1);
         }
 
+        /**
+         * Returns true if the current input value satisfies all constraints (if any)
+         * @returns {boolean}
+         */
+        checkValidity() {
+          if (this.required) {
+            let hasCheckedRadioButton = false;
+            this._radioButtons.forEach(button => {
+              if(button.checked){
+                hasCheckedRadioButton = true }
+            });
+
+            return hasCheckedRadioButton;
+          } else {
+            return !this.invalid;
+          }
+        }
+
+        /**
+         *
+         * @return {boolean} True if the value is valid.
+         */
+        validate() {
+          return !(this.invalid = !this.checkValidity());
+        }
       }
 
       customElements.define(RadioGroupElement.is, RadioGroupElement);
