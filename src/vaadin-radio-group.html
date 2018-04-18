@@ -12,6 +12,10 @@ This program is available under Apache License Version 2.0, available at https:/
 <dom-module id="vaadin-radio-group">
   <template>
     <slot id="slot"></slot>
+    <div part="error-message"
+        aria-live="assertive"
+        aria-hidden$="{{_getErrorMessageAriaHidden(invalid, errorMessage)}}"
+      >[[errorMessage]]</div>
   </template>
 
   <script>
@@ -85,6 +89,14 @@ This program is available under Apache License Version 2.0, available at https:/
               reflectToAttribute: true,
               notify: true,
               value: false
+            },
+
+            /**
+             * Error to show when the input value is invalid.
+             */
+            errorMessage: {
+              type: String,
+              value: ''
             },
           };
         }
@@ -269,6 +281,10 @@ This program is available under Apache License Version 2.0, available at https:/
          */
         validate() {
           return !(this.invalid = !this.checkValidity());
+        }
+
+        _getErrorMessageAriaHidden(invalid, errorMessage) {
+          return (!(invalid && errorMessage.length > 0)).toString();
         }
       }
 
