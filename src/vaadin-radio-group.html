@@ -269,6 +269,14 @@ This program is available under Apache License Version 2.0, available at https:/
                 hasCheckedRadioButton = true }
             });
 
+            this._radioButtons.forEach(button => {
+              if(!hasCheckedRadioButton) {
+                button.setAttribute('invalid', '');
+              } else {
+                button.removeAttribute('invalid');
+              }
+            });
+
             return hasCheckedRadioButton;
           } else {
             return !this.invalid;

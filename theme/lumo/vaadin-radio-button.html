@@ -108,6 +108,15 @@
         border-color: var(--lumo-contrast-30pct);
       }
 
+      /** invalid state */
+      :host([invalid]) [part="radio"] {
+        background-color: var(--lumo-error-color-10pct);
+      }
+
+      :host([invalid]) [part="radio"]:after {
+        border-color: var(--lumo-error-color-50pct);
+      }
+
       /* IE11 only */
       ::-ms-backdrop,
       [part="radio"] {
